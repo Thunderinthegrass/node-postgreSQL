@@ -1,13 +1,20 @@
-//npm run dev запустит всё это дело
-require('dotenv').config()
-const express = require('express')
-const sequelize = require('./db')
-const PORT = process.env.PORT || 5000
+require('dotenv').config();
+const express = require('express');
+const sequelize = require('./db');
+const models = require('./models/models');
+const cors = require('cors');
+const router = require('./routes/index')
 
-const app = express()
+const PORT = process.env.PORT || 5000;
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use('/api', router)
 
 
-const start = async () => {
+
+const start = async() => {
     try {
         await sequelize.authenticate()
         await sequelize.sync()
@@ -17,6 +24,5 @@ const start = async () => {
         console.log(e)
     }
 }
-
-
 start()
+
